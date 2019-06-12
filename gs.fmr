@@ -1,10 +1,20 @@
 dimension :: 1
 axes :: x
 
+double :: dt = 0.2
+double :: Du = 0.05
+
+extern function :: fabs
+
+isCenter = fun(i,w) (fabs(total_grid_x/2-i) < w)
+
+diff = fun(q) (q[i+1] + q[i-1] - 2.0*q[i])
+
 begin function u = init()
-  double [] :: u = 0
+  double [] :: u
+  u[i] = if isCenter(i,3) then 0.7 else 0.0
 end function
 
 begin function u2 = step(u)
-  u2 = u
+  u2 = u + diff(u) * dt
 end function
