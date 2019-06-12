@@ -3,6 +3,9 @@ axes :: x,y
 
 double :: dt = 0.2
 double :: Du = 0.05
+double :: Dv = 0.1 # add
+double :: F = 0.04 # add
+double :: k = 0.06076 #add
 
 extern function :: fabs
 
@@ -10,11 +13,20 @@ isCenter = fun(i,j,w) (fabs(total_grid_x/2-i) < w) && (fabs(total_grid_y/2-j) < 
 
 diff = fun(q) (q[i+1,j] + q[i-1,j] + q[i,j+1] + q[i,j-1] - 4.0*q[i,j])
 
-begin function u = init()
-  double [] :: u
+begin function (u,v) = init()
+  double [] :: u,v
   u[i,j] = if isCenter(i,j,3) then 0.7 else 0.0
+  v[i,j] = if isCenter(i,j,6) then 0.9 else 0.0
 end function
 
-begin function u2 = step(u)
-  u2 = u + diff(u) * dt
+calcU = fun(u,v) (u*u*v - (F+k)*u)
+calcV = fun(u,v) (-u*u*v + F*(1.0-v))
+
+begin function (u2,v2) = step(u,v)
+  du = Du*diff(u)
+  dv = Dv*diff(v)
+  du = du + calcU(u,v)
+  dv = dv + calcV(u,v)
+  u2 = u + du * dt
+  v2 = v + dv * dt
 end function

@@ -25,9 +25,11 @@ void dump(Formura_Navi &n) {
 int main(int argc, char **argv) {
   Formura_Navi n;
   Formura_Init(&argc, &argv, &n);
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 10000; i++) {
     Formura_Forward(&n);
-    dump(n);
+    if (i % 100 == 0) {
+      dump(n);
+    }
   }
   Formura_Finalize();
 }
