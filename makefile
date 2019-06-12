@@ -7,7 +7,7 @@ all: a.out
 $(SRC): $(TARGET).fmr $(TARGET).yaml
 	formura $(TARGET).fmr
 
-a.out: $(SRC) 
+a.out: main.cpp $(SRC) 
 	$(CC) $(CPPFLAGS) main.cpp $(TARGET).c
 
 clean:

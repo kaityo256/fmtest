@@ -1,18 +1,18 @@
-dimension :: 1
-axes :: x
+dimension :: 2
+axes :: x,y
 
 double :: dt = 0.2
 double :: Du = 0.05
 
 extern function :: fabs
 
-isCenter = fun(i,w) (fabs(total_grid_x/2-i) < w)
+isCenter = fun(i,j,w) (fabs(total_grid_x/2-i) < w) && (fabs(total_grid_y/2-j) < w)
 
-diff = fun(q) (q[i+1] + q[i-1] - 2.0*q[i])
+diff = fun(q) (q[i+1,j] + q[i-1,j] + q[i,j+1] + q[i,j-1] - 4.0*q[i,j])
 
 begin function u = init()
   double [] :: u
-  u[i] = if isCenter(i,3) then 0.7 else 0.0
+  u[i,j] = if isCenter(i,j,3) then 0.7 else 0.0
 end function
 
 begin function u2 = step(u)
