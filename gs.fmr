@@ -1,0 +1,10 @@
+dimension :: 1
+axes :: x
+
+begin function u = init()
+  double [] :: u = 0
+end function
+
+begin function u2 = step(u)
+  u2 = u
+end function
